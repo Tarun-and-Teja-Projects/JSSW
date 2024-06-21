@@ -2,13 +2,13 @@ name: Deploy to Firebase Hosting on merge
 on:
   push:
     branches:
-      - master
+      - test
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Navigate to public directory and install dependencies
+      - name: Install dependencies
         working-directory: ./public
         run: |
           if [ -f package-lock.json ]; then
@@ -31,6 +31,8 @@ jobs:
       name: Prod
     needs: build_and_deploy
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Download Code Artifacts
         uses: actions/download-artifact@v2
         with:
@@ -43,3 +45,6 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRSE_AA04E }}
           channelId: live
           projectId: trse-aa04e
+          entryPoint: .
+          expires: 7d
+          firebaseToolsVersion: latest
