@@ -14,12 +14,16 @@ jobs:
       - name: Install dependencies
           
         run: |
+          cd public
           if [ -f package-lock.json ]; then
             npm ci
           else
             npm install
           fi
-      - run: npm run build
+      - name: Build
+        run: |
+          cd public
+          npm run build    
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
