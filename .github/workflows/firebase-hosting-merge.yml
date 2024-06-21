@@ -43,4 +43,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRSE_AA04E }}
           channelId: live
           projectId: trse-aa04e
-          entryPoint: .
+          entryPoint: ./public
