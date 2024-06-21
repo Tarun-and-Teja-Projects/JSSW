@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           name: React Code
-          path: ./public
+          path: ./public/package.json
       - name: Install dependencies
           
         run: |
