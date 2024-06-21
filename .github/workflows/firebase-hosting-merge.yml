@@ -2,13 +2,17 @@ name: Deploy to Firebase Hosting on merge
 on:
   push:
     branches:
-      - master
+      - pipelines
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          name: React Code
+          path: ./public
       - name: Install dependencies
+          
         run: |
           if [ -f package-lock.json ]; then
             npm ci
