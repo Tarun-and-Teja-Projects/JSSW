@@ -1,29 +1,17 @@
-
-import { useDisclosure } from '@mantine/hooks';
-import './App.css'
-import { AppShell } from '@mantine/core';
-import Navbar from './features/Navbar/Navbar';
-import Header from './features/Header/Header';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './features/Home';
+import Layout from './features/Layout/Layout';
 
 function App() {
-
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-      }}
-      padding="sm"
-    >
-     <Header mobileOpened={mobileOpened} desktopOpened={desktopOpened} toggleMobile={toggleMobile} toggleDesktop={toggleDesktop}/>
-      <Navbar/>
-      <AppShell.Main>Main</AppShell.Main>
-    </AppShell>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
