@@ -4,32 +4,32 @@ on:
     branches:
       - master
 jobs:
-  BuildCode:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        working-directory: ./public
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
-      - name: Build
-        working-directory: ./public
-        run: npm run build
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: DcClientApp
-          path: ./public/dist
+  # BuildCode:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Install dependencies
+  #       working-directory: ./public
+  #       run: |
+  #         if [ -f package-lock.json ]; then
+  #           npm ci
+  #         else
+  #           npm install
+  #         fi
+  #     - name: Build
+  #       working-directory: ./public
+  #       run: npm run build
+  #     - name: Upload Artifacts
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: DcClientApp
+  #         path: ./public/dist
 
   ReleaseProject:
     runs-on: ubuntu-latest
     environment:
       name: Prod
-    needs: BuildCode
+    # needs: BuildCode
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
