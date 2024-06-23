@@ -2,11 +2,13 @@ name: Build Check Issues
 
 # Workflow 1: Auto-Assign Issues
 on: 
+  merge_group:
   issues:
     types: [opened]
   pull_request:
     types: [opened] 
 jobs:
+
   auto_assign:
     name: Auto-Assign Issues
     runs-on: ubuntu-latest
