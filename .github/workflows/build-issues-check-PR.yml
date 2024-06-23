@@ -5,7 +5,11 @@ on:
   issues:
     types: [opened]
   pull_request:
-    types: [opened] 
+    types: [opened]
+  merge_group:
+    branches:
+      - master
+
 jobs:
   auto_assign:
     name: Auto-Assign Issues
@@ -14,14 +18,13 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-    - name: 'Auto-assign issue'
-      uses: pozil/auto-assign-issue@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        assignees: prabhutejad
-        numOfAssignee: 1
+      - name: 'Auto-assign issue'
+        uses: pozil/auto-assign-issue@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          assignees: prabhutejad
+          numOfAssignee: 1
 
-# Workflow 2: Deploy to Production Website
   deploy:
     name: Deploy to Production Website
     runs-on: ubuntu-latest
