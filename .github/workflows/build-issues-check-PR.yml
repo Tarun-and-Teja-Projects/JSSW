@@ -34,7 +34,6 @@ jobs:
             npm ci
           else
             npm install
-          fi
       - name: Build
         working-directory: ./public
         run: npm run build
