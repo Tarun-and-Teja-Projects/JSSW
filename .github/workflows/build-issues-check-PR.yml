@@ -1,6 +1,5 @@
 name: Build Check Issues
 
-# Workflow 1: Auto-Assign Issues
 on: 
   issues:
     types: [opened]
@@ -28,15 +27,13 @@ jobs:
   deploy:
     name: Deploy to Production Website
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'merge_group' || github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
         working-directory: ./public
         run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
       - name: Build
         working-directory: ./public
         run: npm run build
@@ -45,3 +42,18 @@ jobs:
         with:
           name: DcClientApp
           path: ./public/dist
+      - name: Approve Pull Request
+        if: ${{ github.event_name == 'merge_group' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { context, github } = require('@actions/github');
+            const prNumber = context.payload.pull_request.number;
+            await github.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              event: 'APPROVE'
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
