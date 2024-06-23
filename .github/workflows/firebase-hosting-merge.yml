@@ -1,7 +1,6 @@
 name: Deploy to Production Website
 on:
   push:
-  merge_group:
     branches:
       - master
 jobs:
