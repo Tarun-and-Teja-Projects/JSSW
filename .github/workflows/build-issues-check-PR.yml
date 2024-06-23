@@ -6,6 +6,11 @@ on:
     types: [opened]
   pull_request:
     types: [opened] 
+name: Deploy to Production Website
+on:
+  merge_group:
+    branches:
+      - master
 jobs:
   auto_assign:
     name: Auto-Assign Issues
