@@ -1,10 +1,29 @@
-name: Deploy to Production Website
-on:
-  merge_group:
-    branches:
-      - master
+name: Build Check Issues
+
+# Workflow 1: Auto-Assign Issues
+on: 
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened] 
 jobs:
-  BuildCode:
+  auto_assign:
+    name: Auto-Assign Issues
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - name: 'Auto-assign issue'
+      uses: pozil/auto-assign-issue@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        assignees: prabhutejad
+        numOfAssignee: 1
+
+# Workflow 2: Deploy to Production Website
+  deploy:
+    name: Deploy to Production Website
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
