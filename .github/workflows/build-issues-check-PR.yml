@@ -1,6 +1,5 @@
 name: Build Check Issues
 
-# Workflow 1: Auto-Assign Issues
 on: 
   issues:
     types: [opened]
@@ -28,6 +27,7 @@ jobs:
   deploy:
     name: Deploy to Production Website
     runs-on: ubuntu-latest
+    if: github.event_name == 'merge_group' || github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
