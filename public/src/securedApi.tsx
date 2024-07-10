@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const securedApi = createApi({
   reducerPath: 'securedApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/api',
+    baseUrl: 'test-txq9.onrender.com/api',
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem('accessToken');
       if (token) {
