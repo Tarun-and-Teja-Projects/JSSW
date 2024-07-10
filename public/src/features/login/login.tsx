@@ -24,7 +24,6 @@ const Login=()=>{
        
             console.log(form.values)
             const addlogin= await addLogins(form.values).unwrap(); 
-            
             if(addlogin){
                 sessionStorage.setItem('accessToken',addlogin.accessToken)
             }
