@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './features/Home';
 import Layout from './features/Layout/Layout';
+import Login from './features/login/login';
 
 function App() {
   return (
     <Router>
       <Routes>
+      <Route index element={<Login />} />
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
         </Route>
       </Routes>
     </Router>

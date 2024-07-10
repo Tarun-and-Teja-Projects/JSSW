@@ -1,22 +1,21 @@
-// import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// export const SecuredApi = createApi({
-//   reducerPath: 'api',
-//   baseQuery: fetchBaseQuery({ 
-//     baseUrl: 'https://pokeapi.co/api/v2/',
-//     // prepareHeaders: (headers, { getState }) => {
-//     //   // Use type assertion for getState
-//     //   const token = (getState()).auth?.token;
-//     //   if (token) {
-//     //     headers.set('Authorization', `Bearer ${token}`)
-//     //   }
-//     //   return headers
-//     // }
-//   }),
-//   // endpoints: (builder) => ({
-//   //   // Define endpoints here if any, otherwise leave it empty
-//   // }),
-// })
+const securedApi = createApi({
+  reducerPath: 'securedApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3000/api',
+    prepareHeaders: (headers) => {
+      const token = sessionStorage.getItem('accessToken');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      headers.set('Content-Type', 'application/json');
+      return headers;
+    },
+  }),
+  endpoints: () => ({
+    // Define your endpoints here
+  }),
+});
 
-// // No need to export hooks from here
-// export default SecuredApi.reducer;
+export default securedApi;

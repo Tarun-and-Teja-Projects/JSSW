@@ -1,10 +1,15 @@
-// import { SecuredApi } from '../securedApi';
-// export const LoginApi = SecuredApi.injectEndpoints({
-//     endpoints: (builder) => ({
-//       getPokemonByName: builder.query({
-//         query: (name) => `pokemon/${name}`,
-//       }),
-//     }),
-//   })
+import securedApi from '../securedApi';
+const ADD_LOGIN='/login';
+export const LoginApi = securedApi.injectEndpoints({
+    endpoints: (builder) => ({
+        AddLogin: builder.mutation({
+            query: (addLogin) => ({
+              url: ADD_LOGIN, 
+              method: 'POST',
+              body: addLogin,
+            }),
+          }),
+    }),
+  })
   
-//   export const { useGetPokemonByNameQuery } = LoginApi;
+  export const { useAddLoginMutation } = LoginApi;
