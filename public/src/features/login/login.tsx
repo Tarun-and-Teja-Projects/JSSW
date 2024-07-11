@@ -1,10 +1,12 @@
-import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container, Loader } from "@mantine/core";
+import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container, Loader, rem } from "@mantine/core";
 import CustomButton from "../Components/ui/CustomButton/CustomButton";
 import {isNotEmpty, useForm} from '@mantine/form';
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle";
 import { useAddLoginMutation } from "../../api/LoginApi";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { notifications } from "@mantine/notifications";
+import { IconX } from "@tabler/icons-react";
 
 const Login=()=>{
     const navigate=useNavigate();
@@ -28,10 +30,21 @@ const Login=()=>{
         }else{
             setLoading(true);
             const addlogin= await addLogins(form.values).unwrap(); 
+            console.log(addlogin)
             if(addlogin){
                 sessionStorage.setItem('accessToken',addlogin.accessToken)
                 navigate('/home');
                 setLoading(false); 
+                if(addlogin.message){
+                    notifications.show({
+                        color: 'red',
+                        title: 'Error',
+                        message: addlogin.message,
+                        icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+                        loading: false,
+                        autoClose: 2000,
+                      });
+                }
             }
         }
     }
