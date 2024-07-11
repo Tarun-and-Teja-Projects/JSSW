@@ -1,31 +1,38 @@
 import React from 'react';
 import { Button } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 
 interface Props {
-  variant: 'submit' | 'cancel'; // Define props with specific variants
+  variant: 'submit' | 'cancel'|'add'; // Define props with specific variants
   onClick: () => void; // onClick handler
 }
 
 const CustomButton: React.FC<Props> = ({ variant, onClick }) => {
   let label = '';
   let color = 'blue';
-  let buttonVariant = 'filled'; // Default variant
+  let buttonVariant = 'filled';
+  let icon: React.ReactNode = null; 
 
   switch (variant) {
     case 'submit':
       label = 'Submit';
-      buttonVariant = 'subtle'; // Use 'subtle' variant for submit
+      buttonVariant = 'subtle'; 
       break;
     case 'cancel':
       label = 'Cancel';
-      break;
+      break;  
+     case 'add':
+      label = 'add';
+      buttonVariant='transparent'
+      icon=<IconPlus/>;
+      break; 
     default:
       label = 'Default';
       break;
   }
 
   return (
-    <Button variant={buttonVariant} color={color} onClick={onClick}>
+    <Button variant={buttonVariant} leftSection={icon} color={color} onClick={onClick}>
       {label}
     </Button>
   );
