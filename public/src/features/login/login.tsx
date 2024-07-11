@@ -1,10 +1,15 @@
-import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container } from "@mantine/core";
-import CustomButton from "../Components/CustomButton/CustomButton";
+import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container, Loader } from "@mantine/core";
+import CustomButton from "../Components/ui/CustomButton/CustomButton";
 import {isNotEmpty, useForm} from '@mantine/form';
-import CustomTitle from "../Components/CustomTitle/CustomTitle";
+import CustomTitle from "../Components/ui/CustomTitle/CustomTitle";
 import { useAddLoginMutation } from "../../api/LoginApi";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Login=()=>{
+    const navigate=useNavigate();
+    const [loading, setLoading] = useState(false); // State to manage loading state
+
     const form=useForm({
         initialValues:{
             username:'',
@@ -21,11 +26,12 @@ const Login=()=>{
         if(isvalidform.hasErrors){
             return;
         }else{
-       
-            console.log(form.values)
+            setLoading(true);
             const addlogin= await addLogins(form.values).unwrap(); 
             if(addlogin){
                 sessionStorage.setItem('accessToken',addlogin.accessToken)
+                navigate('/home');
+                setLoading(false); 
             }
         }
     }
@@ -50,6 +56,11 @@ const Login=()=>{
                     <Group justify="right" mt={10}>
                         <CustomButton variant={"submit"} onClick={handleSubmit}/>
                     </Group>
+                    {loading && (
+                    <Flex justify="center" mt={2}>
+                        <Loader />
+                    </Flex>
+                )}
                 </Card>
               </Flex>
     )

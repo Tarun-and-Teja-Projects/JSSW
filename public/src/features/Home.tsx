@@ -1,7 +1,9 @@
+import Mission from "./misssion";
+
 const Home=()=>{
     return(
         <>
-        <h1>Test</h1>
+        <Mission/>
         </>
     )
 }

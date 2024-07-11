@@ -3,7 +3,6 @@ import securedApi from '../securedApi';
 
 export const store = configureStore({
     reducer: {
-        // Add your other reducers here
         [securedApi.reducerPath]: securedApi.reducer,
       },
       middleware: (getDefaultMiddleware) =>
