@@ -7,15 +7,14 @@ import '@mantine/core/styles.css';
 import { Provider } from 'react-redux'
 import { store } from './slices/store.ts';
 import { Notifications } from '@mantine/notifications';
-
+import '@mantine/notifications/styles.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <MantineProvider>
-    <Notifications >
+      <Notifications/>
      <Provider store={store}>
     <App />
     </Provider>
-    </Notifications>
-    </MantineProvider>
+   </MantineProvider>
   </React.StrictMode>,
 )
