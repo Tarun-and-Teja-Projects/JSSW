@@ -3,6 +3,8 @@ import Layout from './features/Layout/Layout';
 import Login from './features/login/login';
 import Home from './features/Home';
 import AuthService from './authService';
+import Mission from './features/mission/misssion';
+import Contact from './features/contact';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/home" />} />
             <Route path="home" element={<Home />} />
+            <Route path="Mission" element={<Mission/>}/>
+            <Route path="contactDetails" element={<Contact/>}/>
           </Route>
         </Route>
 

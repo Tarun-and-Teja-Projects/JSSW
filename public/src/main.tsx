@@ -11,7 +11,7 @@ import '@mantine/notifications/styles.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <MantineProvider>
-      <Notifications/>
+      <Notifications position='top-right'/>
      <Provider store={store}>
     <App />
     </Provider>
