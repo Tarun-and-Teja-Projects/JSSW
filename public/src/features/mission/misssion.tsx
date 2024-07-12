@@ -87,9 +87,10 @@ const Mission=()=>{
                 })}
                </Table.Tbody>
             </Table>
-            <CustomPagination totalPages={GetMission?.totalPages} currentPage={currentPage} onChange={(value: number)=>{
+          {GetMission?.totalCount>5 && (<CustomPagination totalPages={GetMission?.totalPages} currentPage={currentPage} onChange={(value: number)=>{
                 handleChange(value)
-            } }/>
+            } }/>)}  
+          
             <CustomModal opened={opened} close={close} title={""} children={<MissionForm OnSubmit={(formData: any)=>{
                 handleSubmit(formData)
             } }/>}/>
