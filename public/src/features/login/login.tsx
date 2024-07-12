@@ -22,8 +22,6 @@ const Login=()=>{
             password:isNotEmpty('Please Enter Password')
         }
     });
-console.log('All environment variables:', import.meta.env); // Debugging line
-console.log('Base URL:', import.meta.env.VITE_BASE_URL); // Should log the correct URL
     const[addLogins]=useAddLoginMutation();
     const handleSubmit=async()=>{
         const isvalidform=form.validate();
