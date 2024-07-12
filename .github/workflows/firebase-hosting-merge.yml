@@ -22,7 +22,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: DcClientApp
+          name: React-SPA
           path: ./public/dist
 
   ReleaseProject:
@@ -36,7 +36,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: DcClientApp
+          name: React-SPA
           path: ./public/dist
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
