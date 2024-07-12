@@ -46,9 +46,7 @@ const Login=()=>{
                     sessionStorage.setItem('accessToken',addlogin.data)
 
                 }
-               
                 setLoading(false); 
-               
             }
         }
     }
