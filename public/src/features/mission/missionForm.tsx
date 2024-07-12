@@ -1,6 +1,6 @@
 import { FileInput, Grid, Group, TextInput } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
-import CustomButton from "./Components/ui/CustomButton/CustomButton";
+import CustomButton from "../Components/ui/CustomButton/CustomButton";
 interface Props{
     OnSubmit:(formData:any)=>void;
 }

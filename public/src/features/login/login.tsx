@@ -32,19 +32,21 @@ const Login=()=>{
             const addlogin= await addLogins(form.values).unwrap(); 
             console.log(addlogin)
             if(addlogin){
-                sessionStorage.setItem('accessToken',addlogin.accessToken)
-                navigate('/home');
-                setLoading(false); 
-                if(addlogin.message){
-                    notifications.show({
-                        color: 'red',
-                        title: 'Error',
-                        message: addlogin.message,
-                        icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
-                        loading: false,
-                        autoClose: 2000,
-                      });
+                if(addlogin.status===401){
+                        notifications.show({
+                            color: 'red',
+                            title: 'Login',
+                            message: addlogin.message,
+                            icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+                            loading: false,
+                            autoClose: 2000,
+                          });
+                }else{
+                    navigate('/home');
+                    sessionStorage.setItem('accessToken',addlogin.data)
+
                 }
+                setLoading(false); 
             }
         }
     }

@@ -1,22 +1,31 @@
 import {  Flex, rem, Table } from "@mantine/core";
-import CustomContainer from "./Components/ui/CustomContainer/CustomContainer";
-import CustomCard from "./Components/ui/CustomCard/CustomCard";
-import ImageViewer from "./Components/ImageViewer";
-import CustomIcon from "./Components/ui/CustomIcons/CustomIcon";
-import CustomButton from "./Components/ui/CustomButton/CustomButton";
-import CustomModal from "./Components/ui/CustomModal/CustomModal";
+import CustomContainer from "../Components/ui/CustomContainer/CustomContainer";
+import CustomCard from "../Components/ui/CustomCard/CustomCard";
+import ImageViewer from "../Components/ImageViewer";
+import CustomIcon from "../Components/ui/CustomIcons/CustomIcon";
+import CustomButton from "../Components/ui/CustomButton/CustomButton";
+import CustomModal from "../Components/ui/CustomModal/CustomModal";
 import { useDisclosure } from "@mantine/hooks";
 import MissionForm from "./missionForm";
-import { useAddMissionMutation, useGetMissionQuery } from "../api/missionApiHandler";
+import { useAddMissionMutation, useGetMissionQuery } from "../../api/missionApiHandler";
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from "@tabler/icons-react";
+import CustomPagination from "../Components/ui/CustomPagination";
+import { useState } from "react";
 
 const Mission=()=>{
     const[opened,{open,close}]=useDisclosure(false);
     const AddModal=()=>{
         open();
     }
-    const{data:GetMission,refetch}=useGetMissionQuery({});
+    const[currentPage,setCurrentPage]=useState(1);
+    const handleChange=(page:number)=>{
+        setCurrentPage(page)
+    }
+    const{data:GetMission,refetch}=useGetMissionQuery({
+        pageNumber:currentPage,
+        pageSize:5
+    });
     console.log(GetMission)
     const[addMissions]=useAddMissionMutation();
     const handleSubmit=async(formData:any)=>{
@@ -43,6 +52,7 @@ const Mission=()=>{
     
         }
     }
+    console.log(GetMission)
     return(
        <CustomContainer>
         <CustomCard>
@@ -52,7 +62,6 @@ const Mission=()=>{
             <Table highlightOnHover>
                <Table.Thead>
                 <Table.Tr>
-                <Table.Th>#</Table.Th>
                 <Table.Th>Name</Table.Th>
                 <Table.Th>Description</Table.Th>
                 <Table.Th>Images</Table.Th>
@@ -60,11 +69,10 @@ const Mission=()=>{
                 </Table.Tr>
                </Table.Thead>
                <Table.Tbody>
-                {GetMission?.map((x:any,index:number)=>{
+                {GetMission?.data?.map((x:any,index:number)=>{
 
                     return(
                         <Table.Tr key={index}>
-                            <Table.Td>{index+1}</Table.Td>
                             <Table.Td>{x.title}</Table.Td>
                             <Table.Td>{x.description}</Table.Td>
                             <Table.Td>
@@ -79,6 +87,9 @@ const Mission=()=>{
                 })}
                </Table.Tbody>
             </Table>
+            <CustomPagination totalPages={GetMission?.totalPages} currentPage={currentPage} onChange={(value: number)=>{
+                handleChange(value)
+            } }/>
             <CustomModal opened={opened} close={close} title={""} children={<MissionForm OnSubmit={(formData: any)=>{
                 handleSubmit(formData)
             } }/>}/>

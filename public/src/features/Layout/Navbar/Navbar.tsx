@@ -1,13 +1,14 @@
-import { AppShell, NavLink as MantineNavLink } from "@mantine/core";
-import { IconHome } from '@tabler/icons-react';
-import { NavLink } from 'react-router-dom';
+import { AppShell, NavLink  } from "@mantine/core";
+import { IconAddressBook, IconBook2, IconHome } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <AppShell.Navbar p="mt">
-      <NavLink to="/home" style={{ textDecoration: 'none' }}>
-        <MantineNavLink label="Home" leftSection={<IconHome />} className="" />
-      </NavLink>
+    <AppShell.Navbar p="sm">
+      <NavLink label="Home" leftSection={<IconHome  size={'1.3rem'} stroke={1.5}/>}  component={Link} to="/home"/>
+      <NavLink label="Mission" leftSection={<IconBook2  size={'1.3rem'} stroke={1.5}/>}  component={Link} to="/Mission"/>
+      <NavLink label="Contact" leftSection={<IconAddressBook  size={'1.3rem'} stroke={1.5}/>}  component={Link} to="/contactDetails"/>
+
     </AppShell.Navbar>
   );
 };
