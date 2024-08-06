@@ -5,12 +5,14 @@ import Home from './features/Home';
 import AuthService from './authService';
 import Mission from './features/mission/misssion';
 import Contact from './features/contact';
+import AddOrganizationForm from './features/Organization/OrganizationForm';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/addOrganization" element={<AddOrganizationForm/>}/>
 
         {/* Protected route for authenticated users */}
         <Route element={<AuthService />}>

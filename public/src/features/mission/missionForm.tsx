@@ -23,7 +23,7 @@ const MissionForm:React.FC<Props>=({OnSubmit})=>{
             const isvalues={
                 ...AddData.values,
             }
-            OnSubmit(isvalues)
+            OnSubmit(isvalues);
         }
     }
     return(

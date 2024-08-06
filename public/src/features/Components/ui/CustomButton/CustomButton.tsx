@@ -3,31 +3,34 @@ import { Button } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 
 interface Props {
-  variant: 'submit' | 'cancel'|'add'; // Define props with specific variants
-  onClick: () => void; // onClick handler
+  variant: 'submit' | 'cancel' | 'add'; // Define props with specific variants
+  onClick?: () => void; // onClick handler
+  text?: string; // text should be required if you're using it as a label
 }
 
-const CustomButton: React.FC<Props> = ({ variant, onClick }) => {
-  let label = '';
+const CustomButton: React.FC<Props> = ({ variant, onClick, text }) => {
+  let label = text || ''; // Use the text prop for the label
   let color = 'blue';
   let buttonVariant = 'filled';
   let icon: React.ReactNode = null; 
 
   switch (variant) {
     case 'submit':
-      label = 'Submit';
+      label = text || 'Submit';
       buttonVariant = 'subtle'; 
       break;
     case 'cancel':
-      label = 'Cancel';
+      label = text || 'Cancel';
+      buttonVariant = 'transparent';
+      color = 'gray';
       break;  
-     case 'add':
-      label = 'add';
-      buttonVariant='transparent'
-      icon=<IconPlus/>;
+    case 'add':
+      label = text || 'Add';
+      buttonVariant = 'transparent';
+      icon = <IconPlus />;
       break; 
     default:
-      label = 'Default';
+      label = text || 'Default';
       break;
   }
 
