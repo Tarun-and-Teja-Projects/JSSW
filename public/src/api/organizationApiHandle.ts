@@ -45,8 +45,3 @@ export const OrganizationApiHandler = securedApi.injectEndpoints({
   })
   
   export const { useAddOrganizationMutation,useGetOrganizationQuery,useGetOrganizationByIdQuery,useAddFoundersMutation,useGetFounderByOrgIdQuery,useUpdateFoundersMutation } = OrganizationApiHandler;
-})
-         
-    }),
-  })
-  
