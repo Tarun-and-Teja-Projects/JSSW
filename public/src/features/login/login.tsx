@@ -43,7 +43,9 @@ const Login=()=>{
                           });
                 }else{
                     navigate('/home');
-                    sessionStorage.setItem('accessToken',addlogin.data)
+                    sessionStorage.setItem('accessToken',addlogin.accessToken)
+                    sessionStorage.setItem('refreshToken',addlogin.refreshToken)
+                    sessionStorage.setItem('organizationId',addlogin.organizationId)
 
                 }
                 setLoading(false); 

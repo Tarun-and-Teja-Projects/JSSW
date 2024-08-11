@@ -8,6 +8,8 @@ import { Provider } from 'react-redux'
 import { store } from './slices/store.ts';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
+import 'mantine-react-table/styles.css'; //make sure MRT styles were imported in your app root (once)
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <MantineProvider>

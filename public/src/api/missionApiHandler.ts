@@ -13,7 +13,7 @@ export const MissionApihandler = securedApi.injectEndpoints({
           GetMission:builder.query({
             query:({pageNumber,pageSize})=>
                 GET_MISSION_DATA+`?pageNumber=${pageNumber}&pageSize=${pageSize}`
-          })
+          }),
     }),
   })
   
