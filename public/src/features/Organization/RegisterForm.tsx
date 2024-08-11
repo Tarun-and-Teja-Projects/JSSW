@@ -1,12 +1,20 @@
-import { FileInput, Grid, Group, TextInput } from "@mantine/core"
+import { Button, FileInput, Grid, Group, TextInput } from "@mantine/core"
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
 import CustomCard from "../Components/ui/CustomCard/CustomCard"
 import { isNotEmpty, useForm } from "@mantine/form"
+enum Direction{
+    Add='1',
+    Review='2'
+}
 interface Props{
     nextStep:()=>void;
+    onSubmit:(formData:any)=>void;
+    loadbutton:boolean
+    readonly:boolean
+    direction:Direction
 }
-const RegisterForm:React.FC<Props>=({nextStep})=>{
+const RegisterForm:React.FC<Props>=({onSubmit,loadbutton,readonly,direction})=>{
     const Registers=useForm({
         initialValues:{
             name:'',
@@ -23,14 +31,22 @@ const RegisterForm:React.FC<Props>=({nextStep})=>{
             uploadImage:isNotEmpty('Please Enter Organization Image')
         }
     });
-
+   const onFileSelected = (file: File | null) => {
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64 = reader.result as string;
+            Registers.setFieldValue('uploadImage',base64)
+          };
+          reader.readAsDataURL(file);
+        }
+      }
     const handleSubmit=()=>{
         const isvalidform=Registers.validate();
         if(isvalidform.hasErrors){
             return;
         }else{
-            console.log(Registers.values)
-            nextStep();
+            onSubmit(Registers.values)
         }
     }
     return(
@@ -39,26 +55,45 @@ const RegisterForm:React.FC<Props>=({nextStep})=>{
                     <CustomTitle title={"Register Organization"}/>
                     <Grid mt={25}>
             <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
-                <TextInput label="Name" placeholder="Enter Organization Name" variant="filled" withAsterisk {...Registers.getInputProps('name')}/>
+                <TextInput label="Name" placeholder="Enter Organization Name" readOnly={readonly} variant="filled" withAsterisk {...Registers.getInputProps('name')}/>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
-                <TextInput label="Address" placeholder="Enter Organization Address" variant="filled" withAsterisk {...Registers.getInputProps('address')}/>
+                <TextInput label="Address" placeholder="Enter Organization Address" readOnly={readonly} variant="filled" withAsterisk {...Registers.getInputProps('address')}/>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
-                <TextInput label="PhoneNumber" placeholder="Enter Organization Phone Number" variant="filled" withAsterisk {...Registers.getInputProps('phoneNumber')}/>
+                <TextInput label="PhoneNumber" placeholder="Enter Organization Phone Number" readOnly={readonly} variant="filled" withAsterisk {...Registers.getInputProps('phoneNumber')}/>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
-                <TextInput label="Email" placeholder="Enter Organization Email" variant="filled" withAsterisk {...Registers.getInputProps('email')}/>
+                <TextInput label="Email" placeholder="Enter Organization Email" variant="filled" readOnly={readonly} withAsterisk {...Registers.getInputProps('email')}/>
             </Grid.Col>
             <Grid.Col span={{base:12,md:6,lg:12}}>
-                <FileInput label="Upload Image" placeholder="Upload Organization Image" variant="filled" withAsterisk {...Registers.getInputProps('uploadImage')}/>
+                <FileInput label="Upload Image" placeholder="Upload Organization Image" readOnly={readonly} error={Registers.errors.uploadImage} variant="filled" withAsterisk onChange={onFileSelected} />
             </Grid.Col>
            </Grid>
            
            </CustomCard>
            <Group justify="right" mt={20}>
-            <CustomButton variant={"cancel"}/>
-            <CustomButton variant={"submit"} text="Next Step" onClick={handleSubmit}/>
+          {direction === Direction.Add ? (
+            <>
+              {loadbutton ? (
+                <>
+                   <CustomButton variant={"cancel"}/>
+                   <Button loading={loadbutton}>Submit</Button>
+                </>
+            ):(
+                <>
+   <CustomButton variant={"cancel"}/>
+   <CustomButton variant={"submit"} text="Next Step" onClick={handleSubmit}/>
+                </>
+            )}
+            </>
+          ):(
+            <>
+   <CustomButton variant={"cancel"} text="Back"/>
+   <CustomButton variant={"submit"} text="Submit"/>
+            </>
+          )}
+         
            </Group>
         </>
     )
