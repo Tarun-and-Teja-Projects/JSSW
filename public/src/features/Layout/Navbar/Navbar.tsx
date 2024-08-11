@@ -10,6 +10,7 @@ const Navbar = () => {
       <NavLink label="About" leftSection={<IconUser  size={'1.3rem'} stroke={1.5}/>}  component={Link} to="/contactDetails"/>
       <NavLink label=""/>
 
+
     </AppShell.Navbar>
   );
 };
