@@ -1,5 +1,6 @@
 import securedApi from '../securedApi';
 const ADD_LOGIN='/login';
+const LOGOUT='/logout';
 export const LoginApi = securedApi.injectEndpoints({
     endpoints: (builder) => ({
         AddLogin: builder.mutation({
@@ -9,7 +10,14 @@ export const LoginApi = securedApi.injectEndpoints({
               body: addLogin,
             }),
           }),
+          Logout: builder.mutation({
+            query: (addLogin) => ({
+              url: LOGOUT, 
+              method: 'POST',
+              body: addLogin,
+            }),
+          }),
     }),
   })
   
-  export const { useAddLoginMutation } = LoginApi;
+  export const { useAddLoginMutation,useLogoutMutation } = LoginApi;

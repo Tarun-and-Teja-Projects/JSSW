@@ -24,6 +24,9 @@ const Contact=()=>{
         pageNumber:currentPage,
         pageSize:5
     });
+    const handleeditclick=(data:any)=>{
+        console.log(data)
+    }
     return(
         <CustomContainer>
         <CustomCard>
@@ -48,7 +51,7 @@ const Contact=()=>{
                                 <ImageViewer ImageLink={x.Image}/>
                             </Table.Td>
                             <Table.Td>
-                                <CustomIcon label={"Edit"} type={"edit"}/>
+                                <CustomIcon label={"Edit"} type={"edit"} onClick={()=>{handleeditclick(x)}}/>
                                 <CustomIcon label={"Delete"} type={"delete"}/>
                             </Table.Td>
                         </Table.Tr>
