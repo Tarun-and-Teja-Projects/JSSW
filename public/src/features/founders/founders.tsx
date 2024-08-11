@@ -1,4 +1,4 @@
-import {  Flex,  rem,  Table,Text } from "@mantine/core"
+import {  Flex,  rem,  Table } from "@mantine/core"
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle"
 import CustomContainer from "../Components/ui/CustomContainer/CustomContainer"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
@@ -7,60 +7,109 @@ import { useDisclosure } from "@mantine/hooks"
 
 import MissionForm from "./addFounders"
 import { notifications } from "@mantine/notifications"
-import { useAddFoundersMutation, useGetFounderByOrgIdQuery } from "../../api/organizationApiHandle"
+import { useAddFoundersMutation, useGetFounderByOrgIdQuery, useUpdateFoundersMutation } from "../../api/organizationApiHandle"
 import { IconCheck } from "@tabler/icons-react"
 import ImageViewer from "../Components/ImageViewer"
 import CustomIcon from "../Components/ui/CustomIcons/CustomIcon"
+import CustomLoader from "../Components/CustomLoader"
+import { useState } from "react"
+import NoDataFound from "../Components/NoDataFound"
 
 const Founders=()=>{
     const[opened,{open:OpenModal,close:CloseModal}]=useDisclosure(false);
+    const[updateData,setUpdateData]=useState<any>(null)
+
     const AddFounder=()=>{
         OpenModal();
+        setUpdateData(null)
     }
     const CloseFounder=()=>{
         CloseModal();
+        setUpdateData(null);
     }
     const organizationId=sessionStorage.getItem('organizationId');
     const {data:FoundersData,refetch}=useGetFounderByOrgIdQuery({
         id:organizationId
     })
-    console.log(FoundersData)
     const[addOrganization]=useAddFoundersMutation();
+    const [updateFounder]=useUpdateFoundersMutation();
     const handleSubmit=async(formData:any)=>{
-        console.log(formData)
-        const id = notifications.show({
-            loading: true,
-            title: 'Add Founders',
-            message: 'Please wait, while we save the founders details',
-            autoClose: false,
-            withCloseButton: false,
-          })
-          const obj={
-            "name":formData.name,
-            "designation":formData.designation,
-            "image":formData.image,
-            "orgId":organizationId
-          }
-          const Organizations=await addOrganization(obj).unwrap();
-          if(Organizations){
-            refetch();
-            CloseFounder();
-            notifications.update({
-                id,
-                color: 'teal',
+        if(updateData?.id){
+            const id = notifications.show({
+                loading: true,
+                title: 'Update Founders',
+                message: 'Please wait, while we update the founders details',
+                autoClose: false,
+                withCloseButton: false,
+              })
+              const obj={
+                "id":updateData?.id,
+                "name":formData.name,
+                "designation":formData.designation,
+              }
+              const Organizations=await updateFounder(obj).unwrap();
+              if(Organizations){
+                refetch();
+                CloseFounder();
+                notifications.update({
+                    id,
+                    color: 'teal',
+                    title: 'Update Founders',
+                    message: 'Founders details updated Successfully.',
+                    icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                    loading: false,
+                    autoClose: 4000,
+                  });
+              }
+        }else{
+            const id = notifications.show({
+                loading: true,
                 title: 'Add Founders',
-                message: 'Founders details saved Successfully.',
-                icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
-                loading: false,
-                autoClose: 4000,
-              });
-          }
+                message: 'Please wait, while we save the founders details',
+                autoClose: false,
+                withCloseButton: false,
+              })
+              const obj={
+                "name":formData.name,
+                "designation":formData.designation,
+                "image":formData.image,
+                "orgId":organizationId
+              }
+              const Organizations=await addOrganization(obj).unwrap();
+              if(Organizations){
+                refetch();
+                CloseFounder();
+                notifications.update({
+                    id,
+                    color: 'teal',
+                    title: 'Add Founders',
+                    message: 'Founders details saved Successfully.',
+                    icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                    loading: false,
+                    autoClose: 4000,
+                  });
+              }
+        }
+       
+    }
+    const handleeditclick=(data:any)=>{
+        console.log(data)
+        setUpdateData(data);
+        OpenModal();
+      
     }
     
     return(
         <>
         <CustomTitle title={"Founders"}/>
         <CustomContainer>
+           
+           {!FoundersData?.data ? (
+<>
+<CustomLoader/>
+</>
+           ):(
+            <>
             <Flex justify={'right'}>
                 <CustomButton variant={"add"} onClick={AddFounder}/>
             </Flex>
@@ -84,7 +133,7 @@ const Founders=()=>{
                                     <Table.Td>{x.Designation}</Table.Td>
                                     <Table.Td><ImageViewer ImageLink={x.Image}/></Table.Td>
                                     <Table.Td>
-                                        <CustomIcon label={"Edit"} type={"edit"}/>&nbsp;&nbsp;
+                                        <CustomIcon label={"Edit"} type={"edit"} onClick={()=>handleeditclick(x)}/>&nbsp;&nbsp;
                                         <CustomIcon label="Delete" type="delete"/>
                                     </Table.Td>
                                 </Table.Tr>
@@ -93,16 +142,17 @@ const Founders=()=>{
                     </Table.Tbody>
                 </Table>
            ):(
-            <Flex justify={'center'}>
-                <Text c={'red'}>No Data Found</Text>
-            </Flex>
+           <NoDataFound/>
            )}
             
+            </>
+           )} 
+           
         </CustomContainer>
         <CustomModal opened={opened} close={CloseFounder} title={"Add Founders"} >
-           <MissionForm OnSubmit={(formData: any)=>{
+           <MissionForm OnSubmit={(formData: any) => {
                     handleSubmit(formData)
-                } } CloseFounder={CloseFounder}/>
+                } } CloseFounder={CloseFounder} UpdateFounder={updateData}/>
         </CustomModal>
         </>
     )
