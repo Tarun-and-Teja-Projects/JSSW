@@ -1,10 +1,12 @@
 import { Flex,Text } from "@mantine/core"
-
-const NoDataFound=()=>{
+interface Props{
+    title:string
+}
+const NoDataFound:React.FC<Props>=({title})=>{
     return(
         
         <Flex justify={'center'}>
-            <Text c={'red'}>No Data Found</Text>
+            <Text c={'red'}>No {title} Data Found</Text>
         </Flex>
     )
 }

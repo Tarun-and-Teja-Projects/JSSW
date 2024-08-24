@@ -185,7 +185,7 @@ const Founders=()=>{
                     </Table.Tbody>
                 </Table>
            ):(
-           <NoDataFound/>
+           <NoDataFound title={"Founders"}/>
            )}
             
             </>
