@@ -3,9 +3,9 @@ import Layout from './features/Layout/Layout';
 import Login from './features/login/login';
 import AuthService from './authService';
 import Founders from './features/founders/founders';
-import Contact from './features/contact';
 import AddOrganizationForm from './features/Organization/OrganizationForm';
 import Dashboard from './features/login/dashboard';
+import Events from './features/Events/events';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             <Route index element={<Navigate to="/home" />} />
             <Route path="home" element={<Dashboard />} />
             <Route path="founders" element={<Founders/>}/>
-            <Route path="contactDetails" element={<Contact/>}/>
+            <Route path="events" element={<Events/>}/>
           </Route>
         </Route>
 

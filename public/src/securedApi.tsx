@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const securedApi = createApi({
   reducerPath: 'securedApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://jssw-api.onrender.com/api',
+    baseUrl: 'https://jssw-nodejs-api-zq35qrax5q-uc.a.run.app/api',
     prepareHeaders: (headers) => {
       const token = sessionStorage.getItem('accessToken');
       if (token) {
