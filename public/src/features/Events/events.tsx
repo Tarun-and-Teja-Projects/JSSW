@@ -11,6 +11,7 @@ import CustomIcon from "../Components/ui/CustomIcons/CustomIcon";
 import NoDataFound from "../Components/NoDataFound";
 import AddSocialEvents from "./addEvents";
 
+
 const Events =()=>{
     const organizationId=sessionStorage.getItem('organizationId');
 
@@ -74,6 +75,7 @@ const Events =()=>{
            
         </CustomContainer>
             <CustomModal opened={opened} close={close} title={""} children={<AddSocialEvents/>}/>
+
            
         </>
     )
