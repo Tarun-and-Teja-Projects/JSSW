@@ -5,6 +5,7 @@ const GET_ORGANIZATION_BY_ID='/organizations';
 const ADD_FOUNDERS='/addFounders';
 const GET_FOUNDERS='/getFounders';
 const UPDATE_FOUNDERS='/updateFounders';
+const DELETE_FOUNDERS='/deleteFounders'
 export const OrganizationApiHandler = securedApi.injectEndpoints({
     endpoints: (builder) => ({
         AddOrganization: builder.mutation({
@@ -39,9 +40,15 @@ export const OrganizationApiHandler = securedApi.injectEndpoints({
               method: 'PUT',
               body: addLogin,
             }),
+          }),
+          DeleteFounders:builder.mutation({
+            query:(id)=>({
+              url:DELETE_FOUNDERS+`/${id}`,
+              method:'DELETE',
+            })
           })
          
     }),
   })
   
-  export const { useAddOrganizationMutation,useGetOrganizationQuery,useGetOrganizationByIdQuery,useAddFoundersMutation,useGetFounderByOrgIdQuery,useUpdateFoundersMutation } = OrganizationApiHandler;
+  export const { useAddOrganizationMutation,useGetOrganizationQuery,useGetOrganizationByIdQuery,useAddFoundersMutation,useGetFounderByOrgIdQuery,useUpdateFoundersMutation,useDeleteFoundersMutation} = OrganizationApiHandler;

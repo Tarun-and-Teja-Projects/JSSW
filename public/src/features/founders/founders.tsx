@@ -1,4 +1,4 @@
-import {  Flex,  rem,  Table } from "@mantine/core"
+import {  Flex,  rem,  Table,Text } from "@mantine/core"
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle"
 import CustomContainer from "../Components/ui/CustomContainer/CustomContainer"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
@@ -7,13 +7,14 @@ import { useDisclosure } from "@mantine/hooks"
 
 import MissionForm from "./addFounders"
 import { notifications } from "@mantine/notifications"
-import { useAddFoundersMutation, useGetFounderByOrgIdQuery, useUpdateFoundersMutation } from "../../api/organizationApiHandle"
+import { useAddFoundersMutation, useDeleteFoundersMutation, useGetFounderByOrgIdQuery, useUpdateFoundersMutation } from "../../api/organizationApiHandle"
 import { IconCheck } from "@tabler/icons-react"
 import ImageViewer from "../Components/ImageViewer"
 import CustomIcon from "../Components/ui/CustomIcons/CustomIcon"
 import CustomLoader from "../Components/CustomLoader"
 import { useState } from "react"
 import NoDataFound from "../Components/NoDataFound"
+import { modals } from "@mantine/modals"
 
 const Founders=()=>{
     const[opened,{open:OpenModal,close:CloseModal}]=useDisclosure(false);
@@ -98,6 +99,48 @@ const Founders=()=>{
         OpenModal();
       
     }
+    const [deleteFounders]=useDeleteFoundersMutation();
+    const handleConfirmDelete=async(data:any)=>{
+        console.log(data)
+        const id = notifications.show({
+            loading: true,
+            title: 'Delete Founders',
+            message: 'Please wait, while we delete the founders details',
+            autoClose: false,
+            withCloseButton: false,
+          })
+
+          const DeletedFounders = await deleteFounders(data?.id).unwrap();
+          if(DeletedFounders){
+            refetch();
+            notifications.update({
+                id,
+                color: 'teal',
+                title: 'Deleted Founders',
+                message: 'Founders details deleted Successfully.',
+                icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                loading: false,
+                autoClose: 4000,
+              });
+          }
+
+    }
+    const handleDeleteClick=(data:any)=>{
+        modals.openConfirmModal({
+            title: 'Delete Founder',
+            centered: true,
+            children: (
+              <Text size="sm">
+               Are you sure want to delete founder {data?.name} ?
+              </Text>
+            ),
+            confirmProps: { color: 'red' },
+            labels: { confirm: 'Confirm', cancel: 'Cancel' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => handleConfirmDelete(data),
+          });
+        
+    }
     
     return(
         <>
@@ -134,7 +177,7 @@ const Founders=()=>{
                                     <Table.Td><ImageViewer ImageLink={x.Image}/></Table.Td>
                                     <Table.Td>
                                         <CustomIcon label={"Edit"} type={"edit"} onClick={()=>handleeditclick(x)}/>&nbsp;&nbsp;
-                                        <CustomIcon label="Delete" type="delete"/>
+                                        <CustomIcon label="Delete" type="delete" onClick={()=>handleDeleteClick(x)}/>
                                     </Table.Td>
                                 </Table.Tr>
                             )
