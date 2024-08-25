@@ -5,7 +5,9 @@ const GET_ORGANIZATION_BY_ID='/organizations';
 const ADD_FOUNDERS='/addFounders';
 const GET_FOUNDERS='/getFounders';
 const UPDATE_FOUNDERS='/updateFounders';
-const DELETE_FOUNDERS='/deleteFounders'
+const DELETE_FOUNDERS='/deleteFounders';
+const GETALL_ORGANIZATIONS='/getallOrganization';
+const ADD_ORGUSERS='/addUsers'
 export const OrganizationApiHandler = securedApi.injectEndpoints({
     endpoints: (builder) => ({
         AddOrganization: builder.mutation({
@@ -31,8 +33,8 @@ export const OrganizationApiHandler = securedApi.injectEndpoints({
             })
           }),
           GetFounderByOrgId:builder.query({
-            query:({id})=>
-              GET_FOUNDERS+`?id=${id}`
+            query:({id,pageNumber,pageSize})=>
+              GET_FOUNDERS+`?id=${id}&page=${pageNumber}&pageSize=${pageSize}`
           }),
           UpdateFounders:builder.mutation({
             query: (addLogin) => ({
@@ -46,9 +48,20 @@ export const OrganizationApiHandler = securedApi.injectEndpoints({
               url:DELETE_FOUNDERS+`/${id}`,
               method:'DELETE',
             })
-          })
+          }),
+          GetAllOrganizations:builder.query({
+            query:()=>
+              GETALL_ORGANIZATIONS
+          }),
+          AddOrgUsers:builder.mutation({
+            query:(addfounders)=>({
+              url:ADD_ORGUSERS,
+              method:'POST',
+              body:addfounders
+            })
+          }),
          
     }),
   })
   
-  export const { useAddOrganizationMutation,useGetOrganizationQuery,useGetOrganizationByIdQuery,useAddFoundersMutation,useGetFounderByOrgIdQuery,useUpdateFoundersMutation,useDeleteFoundersMutation} = OrganizationApiHandler;
+  export const { useAddOrganizationMutation,useGetOrganizationQuery,useGetOrganizationByIdQuery,useAddFoundersMutation,useGetFounderByOrgIdQuery,useUpdateFoundersMutation,useDeleteFoundersMutation,useGetAllOrganizationsQuery,useAddOrgUsersMutation} = OrganizationApiHandler;

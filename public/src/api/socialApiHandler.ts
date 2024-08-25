@@ -11,8 +11,8 @@ export const SocialApiHandler = securedApi.injectEndpoints({
             }),
           }),
           GetSocialEvents:builder.query({
-            query:({id})=>
-                GET_SOCIAL_EVENTS+`?id=${id}`  
+            query:({id,pageNumber,pageSize})=>
+                GET_SOCIAL_EVENTS+`?id=${id}&pageNumber=${pageNumber}&pageSize=${pageSize}`  
           })
         
     }),

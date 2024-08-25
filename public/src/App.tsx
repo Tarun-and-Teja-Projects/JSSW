@@ -6,8 +6,13 @@ import Founders from './features/founders/founders';
 import AddOrganizationForm from './features/Organization/OrganizationForm';
 import Dashboard from './features/login/dashboard';
 import Events from './features/Events/events';
+import AdminOrganization from './features/admin/Organization/AdminOrganization';
+import OrganizationUsers from './features/admin/Organization/OrganizationUsers';
+import OrganizationSites from './features/admin/Sites/OrganizationSites';
 
 function App() {
+  const loginRole=sessionStorage.getItem('role')
+
   return (
     <Router>
       <Routes>
@@ -18,10 +23,26 @@ function App() {
         <Route element={<AuthService />}>
           {/* Nested route inside AuthService */}
           <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/home" />} />
+          <Route index element={<Navigate to="/home" />} />
+          <Route path="home" element={<Dashboard />} />
+
+          {loginRole === 'jssw' && (
+            <>
+             <Route index element={<Navigate to="/home" />} />
             <Route path="home" element={<Dashboard />} />
             <Route path="founders" element={<Founders/>}/>
             <Route path="events" element={<Events/>}/>
+            </>
+          )}
+          {loginRole === 'admin' && (
+           <>
+             <Route path='organizations' element={<AdminOrganization/>}/>
+             <Route path='organizationUsers' element={<OrganizationUsers/>}/>
+             <Route path='OrganizationSites' element={<OrganizationSites/>}/>
+           </>
+
+          )}
+           
           </Route>
         </Route>
 
