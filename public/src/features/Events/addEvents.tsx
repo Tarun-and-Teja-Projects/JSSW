@@ -1,8 +1,10 @@
 import { FileInput, Grid, Group, TextInput } from "@mantine/core"
 import { isNotEmpty, useForm } from "@mantine/form"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
-
-const AddSocialEvents=()=>{
+interface EventProps{
+  onSubmit:(formData:any)=>void;
+}
+const AddSocialEvents:React.FC<EventProps>=({onSubmit})=>{
     const addsocialevents=useForm({
         initialValues:{
             name:'',
@@ -31,6 +33,8 @@ const AddSocialEvents=()=>{
         const isvalidform=addsocialevents.validate();
         if(isvalidform.hasErrors){
             return;
+        }else{
+          onSubmit(addsocialevents.values);
         }
       }
     return(

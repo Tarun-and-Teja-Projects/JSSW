@@ -13,7 +13,7 @@ enum Direction{
 }
 const AddOrganizationForm=()=>{
     const [active, setActive] = useState(0);
-    const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+    const nextStep = () => setActive((current) => (current < 2 ? current + 1 : current));
     const[addOrganization]=useAddOrganizationMutation();
     const[loadbutton,setLoadButton]=useState(false);
     const handleOrganizationSubmit=async(formData:any)=>{
@@ -35,6 +35,7 @@ const AddOrganizationForm=()=>{
             const organizationSubmit=await addOrganization(obj).unwrap();
             if(organizationSubmit){
                 setLoadButton(false)
+                setActive(1)
                 notifications.update({
                     id,
                     color: 'teal',

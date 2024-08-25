@@ -1,9 +1,11 @@
-import { Grid, Group, Select, TextInput } from "@mantine/core"
+import { Grid, Group, PasswordInput, rem, Select, TextInput } from "@mantine/core"
 import CustomCard from "../Components/ui/CustomCard/CustomCard"
-import { useGetOrganizationQuery } from "../../api/organizationApiHandle"
+import { useAddOrgUsersMutation, useGetAllOrganizationsQuery } from "../../api/organizationApiHandle"
 import { Organization } from "../../types/organization"
 import { isNotEmpty, useForm } from "@mantine/form"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
+import { notifications } from "@mantine/notifications"
+import { IconCheck } from "@tabler/icons-react"
 
 const UserLogin = () => {
     const loginform=useForm({
@@ -18,58 +20,80 @@ const UserLogin = () => {
             password:isNotEmpty('Please Enter Password')
         }
     })
-    const { data: OrganizationDetails } = useGetOrganizationQuery({});
-    console.log(OrganizationDetails)
+    const { data: OrganizationDetails } = useGetAllOrganizationsQuery({});
+    console.log(OrganizationDetails?.data)
     let findData;
     if(OrganizationDetails){
         findData=OrganizationDetails?.data?.result?.find((x: { id: string })=>x.id===loginform.values.Organization)
+        console.log(findData)
     }
     console.log(findData)
+    const[addUserData]=useAddOrgUsersMutation();
+    const handlesubmit=async()=>{
+        const isvalidform = loginform.validate();
+        if(isvalidform.hasErrors){
+            return;
+        }else{
+            const id = notifications.show({
+                loading: true,
+                title: 'Add Organization Users',
+                message: 'Please wait, while we save the organization users details',
+                autoClose: false,
+                withCloseButton: false,
+              })
+              const obj={
+                ...loginform.values,
+                "orgId":loginform.values.Organization
+              }
+              const addLogin= await addUserData(obj).unwrap();
+              if(addLogin){
+                notifications.update({
+                    id,
+                    color: 'teal',
+                    title: 'Add Organization Users',
+                    message: 'Organization users details saved Successfully.',
+                    icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                    loading: false,
+                    autoClose: 4000,
+                  });
+              }
+
+        }
+    }
     return (
         <><CustomCard>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                    <Select
-                        label="Organization"
-                        placeholder="Select Organization"
-                        variant="filled"
-                        color="#f0f0f0"
-                        data={OrganizationDetails?.data?.result?.map((x: Organization) => ({
-                            label: x.name,
-                            value: x.id
-                        }))}
-                        searchable
-                        withAsterisk
-                        {...loginform.getInputProps('Organization')} />
+                <Select
+  label="Organization"
+  placeholder="Select Organization"
+  variant="filled"
+  color="#f0f0f0"
+  data={
+    OrganizationDetails && OrganizationDetails?.data?.map((x: Organization) => ({
+      label: x.name,
+      value: x.id,
+    })) || []
+  }
+  searchable
+  withAsterisk
+  {...loginform.getInputProps('Organization')}
+/>
+
 
                 </Grid.Col>
-                {loginform.values.Organization && (
-                    <>
-                        <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                            <TextInput label="Name" placeholder="Enter Name" variant="filled" color="#f0f0f0" withAsterisk value={findData?.name} readOnly />
-                        </Grid.Col>
-                        <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                            <TextInput label="Email" placeholder="Enter Email" variant="filled" color="#f0f0f0" withAsterisk value={findData?.email} readOnly />
-                        </Grid.Col>
-                        <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                            <TextInput label="Address" placeholder="Enter address" variant="filled" color="#f0f0f0" withAsterisk value={findData?.address} readOnly />
-                        </Grid.Col>
-                        <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                            <TextInput label="Phone Number" placeholder="Enter Phone Number" variant="filled" color="#f0f0f0" withAsterisk value={findData?.PhoneNumber} readOnly />
-                        </Grid.Col>
-                    </>
-                )}
+               
                 <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
                     <TextInput label="Username" placeholder="Enter Username" variant="filled" color="#f0f0f0" withAsterisk {...loginform.getInputProps('username')} />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                    <TextInput label="Password" placeholder="Enter Password" variant="filled" color="#f0f0f0" withAsterisk {...loginform.getInputProps('password')} />
+                    <PasswordInput label="Password" placeholder="Enter Password" variant="filled" color="#f0f0f0" withAsterisk {...loginform.getInputProps('password')} />
                 </Grid.Col>
             </Grid>
 
         </CustomCard><Group justify="right" mt={25}>
                 <CustomButton variant={"cancel"} text="Back" />
-                <CustomButton variant={"submit"} text="Next Step" />
+                <CustomButton variant={"submit"} text="Submit" onClick={handlesubmit}/>
             </Group></>
     )
 }

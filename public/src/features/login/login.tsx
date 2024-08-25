@@ -46,6 +46,7 @@ const Login=()=>{
                     sessionStorage.setItem('accessToken',addlogin.accessToken)
                     sessionStorage.setItem('refreshToken',addlogin.refreshToken)
                     sessionStorage.setItem('organizationId',addlogin.organizationId)
+                    sessionStorage.setItem('role',addlogin.role)
 
                 }
                 setLoading(false); 

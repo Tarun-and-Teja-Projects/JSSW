@@ -8,7 +8,7 @@ const ImageViewer:React.FC<Props>=({ImageLink})=>{
     return(
            <>
             {ImageLink && (<Zoom>
-                <Image src={ImageLink} h={40}/>
+                <Image src={ImageLink} h={40} w={40}/>
                 </Zoom>)}
            </>
             

@@ -15,6 +15,7 @@ import CustomLoader from "../Components/CustomLoader"
 import { useState } from "react"
 import NoDataFound from "../Components/NoDataFound"
 import { modals } from "@mantine/modals"
+import CustomPagination from "../Components/ui/CustomPagination"
 
 const Founders=()=>{
     const[opened,{open:OpenModal,close:CloseModal}]=useDisclosure(false);
@@ -29,8 +30,14 @@ const Founders=()=>{
         setUpdateData(null);
     }
     const organizationId=sessionStorage.getItem('organizationId');
+    const[currentPage,setCurrentPage]=useState(1);
+    const handleChange=(page:number)=>{
+        setCurrentPage(page)
+    }
     const {data:FoundersData,refetch}=useGetFounderByOrgIdQuery({
-        id:organizationId
+        id:organizationId,
+        pageNumber:currentPage,
+        pageSize:5
     })
     const[addOrganization]=useAddFoundersMutation();
     const [updateFounder]=useUpdateFoundersMutation();
@@ -157,33 +164,37 @@ const Founders=()=>{
                 <CustomButton variant={"add"} onClick={AddFounder}/>
             </Flex>
            {FoundersData?.data?.result.length>0 ? (
-            <Table>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>#</Table.Th>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>Designation</Table.Th>
-                            <Table.Th>Image</Table.Th>
-                            <Table.Th>Action</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        {FoundersData?.data?.result?.map((x:any,index:number)=>{
-                            return(
-                                <Table.Tr key={index}>
-                                    <Table.Td>{index+1}</Table.Td>
-                                    <Table.Td>{x.name}</Table.Td>
-                                    <Table.Td>{x.Designation}</Table.Td>
-                                    <Table.Td><ImageViewer ImageLink={x.Image}/></Table.Td>
-                                    <Table.Td>
-                                        <CustomIcon label={"Edit"} type={"edit"} onClick={()=>handleeditclick(x)}/>&nbsp;&nbsp;
-                                        <CustomIcon label="Delete" type="delete" onClick={()=>handleDeleteClick(x)}/>
-                                    </Table.Td>
-                                </Table.Tr>
-                            )
-                        })}
-                    </Table.Tbody>
-                </Table>
+            <><Table>
+                                    <Table.Thead>
+                                        <Table.Tr>
+                                            <Table.Th>#</Table.Th>
+                                            <Table.Th>Name</Table.Th>
+                                            <Table.Th>Designation</Table.Th>
+                                            <Table.Th>Image</Table.Th>
+                                            <Table.Th>Action</Table.Th>
+                                        </Table.Tr>
+                                    </Table.Thead>
+                                    <Table.Tbody>
+                                        {FoundersData?.data?.result?.map((x: any, index: number) => {
+                                            return (
+                                                <Table.Tr key={index}>
+                                                    <Table.Td>{index + 1}</Table.Td>
+                                                    <Table.Td>{x.name}</Table.Td>
+                                                    <Table.Td>{x.Designation}</Table.Td>
+                                                    <Table.Td><ImageViewer ImageLink={x.Image} /></Table.Td>
+                                                    <Table.Td>
+                                                        <CustomIcon label={"Edit"} type={"edit"} onClick={() => handleeditclick(x)} />&nbsp;&nbsp;
+                                                        <CustomIcon label="Delete" type="delete" onClick={() => handleDeleteClick(x)} />
+                                                    </Table.Td>
+                                                </Table.Tr>
+                                            )
+                                        })}
+                                    </Table.Tbody>
+                                </Table>
+                                <CustomPagination totalPages={FoundersData?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
+                                    handleChange(value)
+                                } } />
+                                </>
            ):(
            <NoDataFound title={"Founders"}/>
            )}
