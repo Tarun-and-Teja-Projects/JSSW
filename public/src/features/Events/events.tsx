@@ -106,7 +106,7 @@ const[addSocial]=useAddSocialEventsMutation();
                                 <CustomPagination totalPages={socialEvents?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
                                     handleChange(value);
                                 } } /></>
-           
+
            ):(
            <NoDataFound title={"Social Events"}/>
            )}
