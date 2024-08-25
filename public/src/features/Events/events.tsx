@@ -106,34 +106,7 @@ const[addSocial]=useAddSocialEventsMutation();
                                 <CustomPagination totalPages={socialEvents?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
                                     handleChange(value);
                                 } } /></>
-=======
-            <Table>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>#</Table.Th>
-                            <Table.Th>Name</Table.Th>
-                            <Table.Th>Designation</Table.Th>
-                            <Table.Th>Image</Table.Th>
-                            <Table.Th>Action</Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        {socialEvents?.data?.result?.map((x:any,index:number)=>{
-                            return(
-                                <Table.Tr key={index}>
-                                    <Table.Td>{index+1}</Table.Td>
-                                    <Table.Td>{x.name}</Table.Td>
-                                    <Table.Td>{x.description}</Table.Td>
-                                    <Table.Td><ImageViewer ImageLink={x.image}/></Table.Td>
-                                    <Table.Td>
-                                        <CustomIcon label={"Edit"} type={"edit"} />&nbsp;&nbsp;
-                                        <CustomIcon label="Delete" type="delete" />
-                                    </Table.Td>
-                                </Table.Tr>
-                            )
-                        })}
-                    </Table.Tbody>
-                </Table>
+           
            ):(
            <NoDataFound title={"Social Events"}/>
            )}
