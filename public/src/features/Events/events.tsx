@@ -15,6 +15,7 @@ import { IconCheck } from "@tabler/icons-react";
 import CustomPagination from "../Components/ui/CustomPagination";
 import { useState } from "react";
 
+
 const Events =()=>{
     const organizationId=sessionStorage.getItem('organizationId');
     const[currentPage,setCurrentPage]=useState(1);
