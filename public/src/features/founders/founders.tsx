@@ -4,7 +4,6 @@ import CustomContainer from "../Components/ui/CustomContainer/CustomContainer"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
 import CustomModal from "../Components/ui/CustomModal/CustomModal"
 import { useDisclosure } from "@mantine/hooks"
-
 import MissionForm from "./addFounders"
 import { notifications } from "@mantine/notifications"
 import { useAddFoundersMutation, useDeleteFoundersMutation, useGetFounderByOrgIdQuery, useUpdateFoundersMutation } from "../../api/organizationApiHandle"
@@ -16,7 +15,11 @@ import { useState } from "react"
 import NoDataFound from "../Components/NoDataFound"
 import { modals } from "@mantine/modals"
 import CustomPagination from "../Components/ui/CustomPagination"
-
+import {
+    MantineReactTable,
+    MRT_ColumnDef,
+  } from 'mantine-react-table';
+  
 const Founders=()=>{
     const[opened,{open:OpenModal,close:CloseModal}]=useDisclosure(false);
     const[updateData,setUpdateData]=useState<any>(null)
@@ -148,6 +151,24 @@ const Founders=()=>{
           });
         
     }
+    const columnsData: MRT_ColumnDef<any>[] = [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+        },
+        {
+            accessorKey:'Designation',
+            header:'Designation'
+        },
+        {
+            accessorKey:'Image',
+            header:'Image',
+            Cell: ({  row }) => (
+                <ImageViewer ImageLink={row.original.Image}/>
+            )
+            }
+        // Add more columns if needed
+    ];
     
     return(
         <>
@@ -164,37 +185,61 @@ const Founders=()=>{
                 <CustomButton variant={"add"} onClick={AddFounder}/>
             </Flex>
            {FoundersData?.data?.result.length>0 ? (
-            <><Table>
-                                    <Table.Thead>
-                                        <Table.Tr>
-                                            <Table.Th>#</Table.Th>
-                                            <Table.Th>Name</Table.Th>
-                                            <Table.Th>Designation</Table.Th>
-                                            <Table.Th>Image</Table.Th>
-                                            <Table.Th>Action</Table.Th>
-                                        </Table.Tr>
-                                    </Table.Thead>
-                                    <Table.Tbody>
-                                        {FoundersData?.data?.result?.map((x: any, index: number) => {
-                                            return (
-                                                <Table.Tr key={index}>
-                                                    <Table.Td>{index + 1}</Table.Td>
-                                                    <Table.Td>{x.name}</Table.Td>
-                                                    <Table.Td>{x.Designation}</Table.Td>
-                                                    <Table.Td><ImageViewer ImageLink={x.Image} /></Table.Td>
-                                                    <Table.Td>
-                                                        <CustomIcon label={"Edit"} type={"edit"} onClick={() => handleeditclick(x)} />&nbsp;&nbsp;
-                                                        <CustomIcon label="Delete" type="delete" onClick={() => handleDeleteClick(x)} />
-                                                    </Table.Td>
-                                                </Table.Tr>
-                                            )
-                                        })}
-                                    </Table.Tbody>
-                                </Table>
-                                <CustomPagination totalPages={FoundersData?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
-                                    handleChange(value)
-                                } } />
-                                </>
+            // <><Table>
+            //                         <Table.Thead>
+            //                             <Table.Tr>
+            //                                 <Table.Th>#</Table.Th>
+            //                                 <Table.Th>Name</Table.Th>
+            //                                 <Table.Th>Designation</Table.Th>
+            //                                 <Table.Th>Image</Table.Th>
+            //                                 <Table.Th>Action</Table.Th>
+            //                             </Table.Tr>
+            //                         </Table.Thead>
+            //                         <Table.Tbody>
+            //                             {FoundersData?.data?.result?.map((x: any, index: number) => {
+            //                                 return (
+            //                                     <Table.Tr key={index}>
+            //                                         <Table.Td>{index + 1}</Table.Td>
+            //                                         <Table.Td>{x.name}</Table.Td>
+            //                                         <Table.Td>{x.Designation}</Table.Td>
+            //                                         <Table.Td><ImageViewer ImageLink={x.Image} /></Table.Td>
+            //                                         <Table.Td>
+            //                                             <CustomIcon label={"Edit"} type={"edit"} onClick={() => handleeditclick(x)} />&nbsp;&nbsp;
+            //                                             <CustomIcon label="Delete" type="delete" onClick={() => handleDeleteClick(x)} />
+            //                                         </Table.Td>
+            //                                     </Table.Tr>
+            //                                 )
+            //                             })}
+            //                         </Table.Tbody>
+            //                     </Table>
+            //                     <CustomPagination totalPages={FoundersData?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
+            //                         handleChange(value)
+            //                     } } />
+            //                     </>
+            <MantineReactTable 
+            data={FoundersData?.data?.result || []} // Ensure fallback to an empty array to prevent crashes
+            columns={columnsData} 
+            enablePagination={true} 
+            enableSorting={true} 
+            enableRowActions={true}
+            renderRowActions={({ row }) => (  // Destructure row from the parameter
+                <>
+                    <CustomIcon 
+                        label={"Edit"} 
+                        type={"edit"} 
+                        onClick={() => handleeditclick(row.getValue('id'))} 
+                    />
+                    &nbsp;&nbsp;
+                    <CustomIcon 
+                        label="Delete" 
+                        type="delete" 
+                        onClick={() => handleDeleteClick(row.getValue('id'))} 
+                    />
+                </>
+            )}
+        
+        />
+        
            ):(
            <NoDataFound title={"Founders"}/>
            )}
