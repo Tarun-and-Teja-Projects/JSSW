@@ -13,7 +13,7 @@ const Layout = () => {
     <AppShell
       header={{ height: 60 }}
       navbar={{
-        width: 200,
+        width: 215,
         breakpoint: 'sm',
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}

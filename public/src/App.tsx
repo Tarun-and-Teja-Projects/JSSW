@@ -15,8 +15,19 @@ import ProjectRequirements from './features/projectRequirements/ProjectRequireme
 
 
 function App() {
-  const loginRole=sessionStorage.getItem('role') ||useSelector((state:RootState)=>state.login.roles)
-
+  const rolesFromState = useSelector((state: RootState) => state.login.roles);
+  const rolesFromSession = sessionStorage.getItem('role');
+  
+  let loginRole;
+  
+  if (rolesFromState.length>0) {
+      loginRole = rolesFromState; 
+  } else if (rolesFromSession) {
+      loginRole = rolesFromSession;
+  } else {
+      loginRole = null;
+  }
+  
   return (
     <Router>
       <Routes>

@@ -1,6 +1,5 @@
-import {  Flex,  rem,  Table,Text } from "@mantine/core"
+import {    rem,Text } from "@mantine/core"
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle"
-import CustomContainer from "../Components/ui/CustomContainer/CustomContainer"
 import CustomButton from "../Components/ui/CustomButton/CustomButton"
 import CustomModal from "../Components/ui/CustomModal/CustomModal"
 import { useDisclosure } from "@mantine/hooks"
@@ -12,9 +11,7 @@ import ImageViewer from "../Components/ImageViewer"
 import CustomIcon from "../Components/ui/CustomIcons/CustomIcon"
 import CustomLoader from "../Components/CustomLoader"
 import { useState } from "react"
-import NoDataFound from "../Components/NoDataFound"
 import { modals } from "@mantine/modals"
-import CustomPagination from "../Components/ui/CustomPagination"
 import {
     MantineReactTable,
     MRT_ColumnDef,
@@ -33,14 +30,14 @@ const Founders=()=>{
         setUpdateData(null);
     }
     const organizationId=sessionStorage.getItem('organizationId');
-    const[currentPage,setCurrentPage]=useState(1);
-    const handleChange=(page:number)=>{
-        setCurrentPage(page)
-    }
+    const[pagination,setPagination]=useState({
+        pageIndex:0,
+        pageSize:5
+    })
     const {data:FoundersData,refetch}=useGetFounderByOrgIdQuery({
         id:organizationId,
-        pageNumber:currentPage,
-        pageSize:5
+        pageNumber:pagination.pageIndex+1,
+        pageSize:pagination.pageSize
     })
     const[addOrganization]=useAddFoundersMutation();
     const [updateFounder]=useUpdateFoundersMutation();
@@ -167,87 +164,59 @@ const Founders=()=>{
                 <ImageViewer ImageLink={row.original.Image}/>
             )
             }
-        // Add more columns if needed
     ];
     
     return(
         <>
-        <CustomTitle title={"Founders"}/>
-        <CustomContainer>
-           
+        <CustomTitle title={"Founders"}/><br/>
            {!FoundersData?.data ? (
 <>
 <CustomLoader/>
 </>
            ):(
             <>
-            <Flex justify={'right'}>
-                <CustomButton variant={"add"} onClick={AddFounder}/>
-            </Flex>
-           {FoundersData?.data?.result.length>0 ? (
-            // <><Table>
-            //                         <Table.Thead>
-            //                             <Table.Tr>
-            //                                 <Table.Th>#</Table.Th>
-            //                                 <Table.Th>Name</Table.Th>
-            //                                 <Table.Th>Designation</Table.Th>
-            //                                 <Table.Th>Image</Table.Th>
-            //                                 <Table.Th>Action</Table.Th>
-            //                             </Table.Tr>
-            //                         </Table.Thead>
-            //                         <Table.Tbody>
-            //                             {FoundersData?.data?.result?.map((x: any, index: number) => {
-            //                                 return (
-            //                                     <Table.Tr key={index}>
-            //                                         <Table.Td>{index + 1}</Table.Td>
-            //                                         <Table.Td>{x.name}</Table.Td>
-            //                                         <Table.Td>{x.Designation}</Table.Td>
-            //                                         <Table.Td><ImageViewer ImageLink={x.Image} /></Table.Td>
-            //                                         <Table.Td>
-            //                                             <CustomIcon label={"Edit"} type={"edit"} onClick={() => handleeditclick(x)} />&nbsp;&nbsp;
-            //                                             <CustomIcon label="Delete" type="delete" onClick={() => handleDeleteClick(x)} />
-            //                                         </Table.Td>
-            //                                     </Table.Tr>
-            //                                 )
-            //                             })}
-            //                         </Table.Tbody>
-            //                     </Table>
-            //                     <CustomPagination totalPages={FoundersData?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
-            //                         handleChange(value)
-            //                     } } />
-            //                     </>
             <MantineReactTable 
-            data={FoundersData?.data?.result || []} // Ensure fallback to an empty array to prevent crashes
-            columns={columnsData} 
-            enablePagination={true} 
-            enableSorting={true} 
-            enableRowActions={true}
-            renderRowActions={({ row }) => (  // Destructure row from the parameter
-                <>
-                    <CustomIcon 
-                        label={"Edit"} 
-                        type={"edit"} 
-                        onClick={() => handleeditclick(row.getValue('id'))} 
-                    />
-                    &nbsp;&nbsp;
-                    <CustomIcon 
-                        label="Delete" 
-                        type="delete" 
-                        onClick={() => handleDeleteClick(row.getValue('id'))} 
-                    />
-                </>
-            )}
+    data={FoundersData?.data?.result || []} 
+    columns={columnsData} 
+    enablePagination={true} 
+    enableSorting={true} 
+    enableRowActions={true}
+    enableColumnPinning={true}
+    manualPagination={true}
+    rowCount={FoundersData?.data?.totalCount}
+    renderRowActions={({ row }) => (  
+        <>
+            <CustomIcon 
+                label="Edit" 
+                type="edit" 
+                onClick={() => handleeditclick(row.original)} 
+            />
+            &nbsp;&nbsp;
+            <CustomIcon 
+                label="Delete" 
+                type="delete" 
+                onClick={() => handleDeleteClick(row.original)} 
+            />
+        </>
+    )}
+    renderTopToolbarCustomActions={() => (
+        <CustomButton variant="add" onClick={AddFounder} />
+    )}
+    initialState={{
+        columnPinning: {
+            left: ['mrt-row-expand', 'mrt-row-select'],
+            right: ['mrt-row-actions'],
+        },
         
-        />
-        
-           ):(
-           <NoDataFound title={"Founders"}/>
-           )}
+    }}
+    state={{ pagination }}
+    onPaginationChange={setPagination}
+/>
+
             
             </>
            )} 
            
-        </CustomContainer>
         <CustomModal opened={opened} close={CloseFounder} title={"Add Founders"} >
            <MissionForm OnSubmit={(formData: any) => {
                     handleSubmit(formData)

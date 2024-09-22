@@ -1,10 +1,22 @@
-import { Flex, Loader } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 
 const CustomLoader=()=>{
     return(
-        <Flex justify={'center'}>
-<Loader type="bars"/>
-        </Flex>
+       <>
+        <Skeleton height={8} radius="xl"mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+        <Skeleton height={15} radius="xl" mt={5} />
+
+       </>
     )
 }
 export default CustomLoader;
