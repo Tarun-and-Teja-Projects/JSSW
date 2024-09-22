@@ -10,7 +10,6 @@ const Dashboard=()=>{
     id:organizationId
   })
   
-  console.log(OrganizationData)
     const icons = {
         user: IconUserPlus,
         discount: IconDiscount2,

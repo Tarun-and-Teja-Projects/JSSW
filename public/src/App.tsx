@@ -9,9 +9,11 @@ import Events from './features/Events/events';
 import AdminOrganization from './features/admin/Organization/AdminOrganization';
 import OrganizationUsers from './features/admin/Organization/OrganizationUsers';
 import OrganizationSites from './features/admin/Sites/OrganizationSites';
+import { useSelector } from 'react-redux';
+import { RootState } from './slices/store';
 
 function App() {
-  const loginRole=sessionStorage.getItem('role')
+  const loginRole=sessionStorage.getItem('role') ||useSelector((state:RootState)=>state.login.roles)
 
   return (
     <Router>
