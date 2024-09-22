@@ -14,6 +14,7 @@ const CustomButton: React.FC<Props> = ({ variant, onClick, text,size }) => {
   let color = 'blue';
   let buttonVariant = 'filled';
   let icon: React.ReactNode = null; 
+  let size='xs';
 
   switch (variant) {
     case 'submit':
