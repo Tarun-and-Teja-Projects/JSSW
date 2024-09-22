@@ -1,33 +1,30 @@
-import { Flex, rem, Table } from "@mantine/core";
+import {  rem } from "@mantine/core";
 import { useAddSocialEventsMutation, useGetSocialEventsQuery } from "../../api/socialApiHandler";
 import CustomButton from "../Components/ui/CustomButton/CustomButton";
 import { useDisclosure } from "@mantine/hooks";
 import CustomModal from "../Components/ui/CustomModal/CustomModal";
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle";
-import CustomContainer from "../Components/ui/CustomContainer/CustomContainer";
 import CustomLoader from "../Components/CustomLoader";
-import ImageViewer from "../Components/ImageViewer";
 import CustomIcon from "../Components/ui/CustomIcons/CustomIcon";
-import NoDataFound from "../Components/NoDataFound";
 import AddSocialEvents from "./addEvents";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
-import CustomPagination from "../Components/ui/CustomPagination";
 import { useState } from "react";
+import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
 
 
 const Events =()=>{
     const organizationId=sessionStorage.getItem('organizationId');
-    const[currentPage,setCurrentPage]=useState(1);
-    const handleChange=(page:number)=>{
-        setCurrentPage(page)
-    }
+   
+    const[pagination,setPagination]=useState({
+        pageIndex:0,
+        pageSize:5
+    })
     const{data:socialEvents,refetch}=useGetSocialEventsQuery({
         id:organizationId,
-        pageNumber:currentPage,
-        pageSize:5
+        pageNumber:pagination.pageIndex+1,
+        pageSize:pagination.pageSize
     });
-    console.log(socialEvents)
     const[opened,{open,close}]=useDisclosure(false);
     const AddEvents=()=>{
         open();
@@ -60,61 +57,68 @@ const[addSocial]=useAddSocialEventsMutation();
               });
         }
     }
+    const columnsData: MRT_ColumnDef<any>[] = [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+        },
+        {
+            accessorKey:'description',
+            header:'Description'
+        },
+       
+    ];
     return(
         <>
          
-            <CustomTitle title={"Social Events"}/>
-        <CustomContainer>
-           
+            <CustomTitle title={"Social Events"}/><br/>
+
            {!socialEvents?.data ? (
 <>
 <CustomLoader/>
 </>
            ):(
             <>
-            <Flex justify={'right'}>
-                <CustomButton variant={"add"} onClick={AddEvents}/>
-            </Flex>
-           {socialEvents?.data?.result.length>0 ? (
-            <><Table>
-                                    <Table.Thead>
-                                        <Table.Tr>
-                                            <Table.Th>#</Table.Th>
-                                            <Table.Th>Name</Table.Th>
-                                            <Table.Th>Designation</Table.Th>
-                                            <Table.Th>Image</Table.Th>
-                                            <Table.Th>Action</Table.Th>
-                                        </Table.Tr>
-                                    </Table.Thead>
-                                    <Table.Tbody>
-                                        {socialEvents?.data?.result?.map((x: any, index: number) => {
-                                            return (
-                                                <Table.Tr key={index}>
-                                                    <Table.Td>{index + 1}</Table.Td>
-                                                    <Table.Td>{x.name}</Table.Td>
-                                                    <Table.Td>{x.description}</Table.Td>
-                                                    <Table.Td><ImageViewer ImageLink={x.image} /></Table.Td>
-                                                    <Table.Td>
-                                                        <CustomIcon label={"Edit"} type={"edit"} />&nbsp;&nbsp;
-                                                        <CustomIcon label="Delete" type="delete" />
-                                                    </Table.Td>
-                                                </Table.Tr>
-                                            );
-                                        })}
-                                    </Table.Tbody>
-                                </Table>
-                                <CustomPagination totalPages={socialEvents?.data?.totalPages} currentPage={currentPage} onChange={(value: number) => {
-                                    handleChange(value);
-                                } } /></>
+           
+           
+            <MantineReactTable data={socialEvents?.data?.result || []} columns={columnsData}  enablePagination={true} 
+            enableSorting={true} 
+            enableRowActions={true}
+            enableColumnPinning={true}
+            manualPagination={true}
+            rowCount={socialEvents?.data?.totalRecords}
+            renderRowActions={({}) => (  
+                <>
+                    <CustomIcon 
+                        label="Edit" 
+                        type="edit" 
+                    />
+                    &nbsp;&nbsp;
+                    <CustomIcon 
+                        label="Delete" 
+                        type="delete" 
+                    />
+                </>
+            )}
+            renderTopToolbarCustomActions={() => (
+                <CustomButton variant="add" onClick={AddEvents} />
+            )}
+            initialState={{
+                columnPinning: {
+                    left: ['mrt-row-expand', 'mrt-row-select'],
+                    right: ['mrt-row-actions'],
+                },
+                
+            }}
+            state={{ pagination }}
+            onPaginationChange={setPagination}
+        
+            />
 
-           ):(
-           <NoDataFound title={"Social Events"}/>
-           )}
             
             </>
            )} 
            
-        </CustomContainer>
             <CustomModal opened={opened} close={close} title={""} children={<AddSocialEvents onSubmit={(formData: any)=>{
                handleSubmit(formData)
             } }/>}/>
