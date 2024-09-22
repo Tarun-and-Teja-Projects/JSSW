@@ -20,7 +20,7 @@ jobs:
         working-directory: ./public
         run: npm run build
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: React-SPA
           path: ./public/dist
@@ -34,7 +34,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: React-SPA
           path: ./public/dist
