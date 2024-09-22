@@ -6,14 +6,14 @@ interface Props {
   variant: 'submit' | 'cancel' | 'add' | 'logindefault'; // Define props with specific variants
   onClick?: () => void; // onClick handler
   text?: string; // text should be required if you're using it as a label
+  size?:string;
 }
 
-const CustomButton: React.FC<Props> = ({ variant, onClick, text }) => {
+const CustomButton: React.FC<Props> = ({ variant, onClick, text,size }) => {
   let label = text || ''; // Use the text prop for the label
   let color = 'blue';
   let buttonVariant = 'filled';
   let icon: React.ReactNode = null; 
-  let size='xs';
 
   switch (variant) {
     case 'submit':
@@ -34,7 +34,7 @@ const CustomButton: React.FC<Props> = ({ variant, onClick, text }) => {
       label = text || '';
       buttonVariant = 'subtle';
       color='gray';
-      size='xs';
+      size=size || 'xs';
       break;
     default:
       label = text || 'Default';
