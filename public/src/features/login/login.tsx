@@ -7,10 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { IconX } from "@tabler/icons-react";
+import { useDispatch } from "react-redux";
+import { setRoles } from "../../slices/loginSlice";
 
 const Login=()=>{
     const navigate=useNavigate();
-    const [loading, setLoading] = useState(false); // State to manage loading state
+    const [loading, setLoading] = useState(false); 
 
     const form=useForm({
         initialValues:{
@@ -22,6 +24,7 @@ const Login=()=>{
             password:isNotEmpty('Please Enter Password')
         }
     });
+    const dispatch=useDispatch();
     const[addLogins]=useAddLoginMutation();
     const handleSubmit=async()=>{
         const isvalidform=form.validate();
@@ -47,6 +50,7 @@ const Login=()=>{
                     sessionStorage.setItem('refreshToken',addlogin.refreshToken)
                     sessionStorage.setItem('organizationId',addlogin.organizationId)
                     sessionStorage.setItem('role',addlogin.role)
+                    dispatch(setRoles(addlogin.role))
 
                 }
                 setLoading(false); 
