@@ -1,4 +1,4 @@
-import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container, Loader, rem } from "@mantine/core";
+import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container, Loader, rem, Button } from "@mantine/core";
 import CustomButton from "../Components/ui/CustomButton/CustomButton";
 import {isNotEmpty, useForm} from '@mantine/form';
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle";
@@ -13,6 +13,7 @@ import { setRoles } from "../../slices/loginSlice";
 const Login=()=>{
     const navigate=useNavigate();
     const [loading, setLoading] = useState(false); 
+   
 
     const form=useForm({
         initialValues:{
@@ -25,6 +26,14 @@ const Login=()=>{
         }
     });
     const dispatch=useDispatch();
+    const organization =()=>{
+        form.setFieldValue('username','admin');
+        form.setFieldValue('password','jssw')
+    }
+    const admin=()=>{
+        form.setFieldValue('username','prabhuteja');
+        form.setFieldValue('password','Prabhu@985')
+    }
     const[addLogins]=useAddLoginMutation();
     const handleSubmit=async()=>{
         const isvalidform=form.validate();
@@ -75,9 +84,15 @@ const Login=()=>{
                             <PasswordInput label="Password" variant="filled" color="#f0f0f0" placeholder="Enter Password" withAsterisk {...form.getInputProps('password')}/>
                         </Grid.Col>
                     </Grid>
-                    <Group justify="right" mt={10}>
-                        <CustomButton variant={"submit"} onClick={handleSubmit}/>
+                    <Group justify="right" mt={15}>
+                        <Button fullWidth onClick={handleSubmit} size="xs">Login</Button>
                     </Group>
+                    <Group justify="space-between" mt={15}>
+                        <CustomButton variant={"logindefault"} text="Fill Organization"  onClick={()=>{organization()}}/>
+                        <CustomButton variant={"logindefault"} text="Fill Admin"  onClick={()=>{admin()}}/>
+
+                    </Group>
+                   
                     {loading && (
                     <Flex justify="center" mt={2}>
                         <Loader />
