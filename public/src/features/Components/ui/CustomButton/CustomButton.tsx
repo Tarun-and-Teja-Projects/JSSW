@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CustomButton: React.FC<Props> = ({ variant, onClick, text,size }) => {
-  let label = text || ''; // Use the text prop for the label
+  let label = text || ''; 
   let color = 'blue';
   let buttonVariant = 'filled';
   let icon: React.ReactNode = null; 
