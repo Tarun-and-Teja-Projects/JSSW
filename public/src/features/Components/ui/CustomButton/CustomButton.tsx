@@ -10,11 +10,10 @@ interface Props {
 }
 
 const CustomButton: React.FC<Props> = ({ variant, onClick, text,size }) => {
-  let label = text || ''; // Use the text prop for the label
+
   let color = 'blue';
   let buttonVariant = 'filled';
   let icon: React.ReactNode = null; 
-  let size='xs';
 
   switch (variant) {
     case 'submit':
