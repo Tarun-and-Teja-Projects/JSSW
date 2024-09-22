@@ -11,6 +11,8 @@ import OrganizationUsers from './features/admin/Organization/OrganizationUsers';
 import OrganizationSites from './features/admin/Sites/OrganizationSites';
 import { useSelector } from 'react-redux';
 import { RootState } from './slices/store';
+import ProjectRequirements from './features/projectRequirements/ProjectRequirements';
+
 
 function App() {
   const loginRole=sessionStorage.getItem('role') ||useSelector((state:RootState)=>state.login.roles)
@@ -34,6 +36,7 @@ function App() {
             <Route path="home" element={<Dashboard />} />
             <Route path="founders" element={<Founders/>}/>
             <Route path="events" element={<Events/>}/>
+            <Route path='projectRequirements' element={<ProjectRequirements/>}/>
             </>
           )}
           {loginRole === 'admin' && (
