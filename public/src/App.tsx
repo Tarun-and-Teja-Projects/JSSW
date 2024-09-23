@@ -12,6 +12,11 @@ import OrganizationSites from './features/admin/Sites/OrganizationSites';
 import { useSelector } from 'react-redux';
 import { RootState } from './slices/store';
 import ProjectRequirements from './features/projectRequirements/ProjectRequirements';
+import About from './features/about/about';
+import Gallery from './features/gallery/gallery';
+import Videos from './features/videos/videos';
+import Donate from './features/denote/donate';
+import Contact from './features/contact';
 
 
 function App() {
@@ -48,6 +53,11 @@ function App() {
             <Route path="founders" element={<Founders/>}/>
             <Route path="events" element={<Events/>}/>
             <Route path='projectRequirements' element={<ProjectRequirements/>}/>
+            <Route path="about" element={<About/>}/>
+            <Route path='gallery' element={<Gallery/>}/>
+            <Route path="videos" element={<Videos/>}/>
+            <Route path="contact" element={<Contact/>}/>
+            <Route path='donate' element={<Donate/>}/>
             </>
           )}
           {loginRole === 'admin' && (
