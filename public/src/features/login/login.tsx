@@ -1,5 +1,4 @@
 import {  Card, Grid, Group, Image, Flex, TextInput, PasswordInput, Container, Loader, rem, Button } from "@mantine/core";
-import CustomButton from "../Components/ui/CustomButton/CustomButton";
 import {isNotEmpty, useForm} from '@mantine/form';
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle";
 import { useAddLoginMutation } from "../../api/LoginApi";
@@ -26,14 +25,14 @@ const Login=()=>{
         }
     });
     const dispatch=useDispatch();
-    const organization =()=>{
-        form.setFieldValue('username','admin');
-        form.setFieldValue('password','jssw')
-    }
-    const admin=()=>{
-        form.setFieldValue('username','prabhuteja');
-        form.setFieldValue('password','Prabhu@985')
-    }
+    // const organization =()=>{
+    //     form.setFieldValue('username','admin');
+    //     form.setFieldValue('password','jssw')
+    // }
+    // const admin=()=>{
+    //     form.setFieldValue('username','prabhuteja');
+    //     form.setFieldValue('password','Prabhu@985')
+    // }
     const[addLogins]=useAddLoginMutation();
     const handleSubmit=async()=>{
         const isvalidform=form.validate();
