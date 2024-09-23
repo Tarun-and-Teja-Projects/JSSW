@@ -1,6 +1,5 @@
 import {    rem,Text } from "@mantine/core"
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle"
-import CustomButton from "../Components/ui/CustomButton/CustomButton"
 import CustomModal from "../Components/ui/CustomModal/CustomModal"
 import { useDisclosure } from "@mantine/hooks"
 import MissionForm from "./addFounders"
@@ -8,15 +7,15 @@ import { notifications } from "@mantine/notifications"
 import { useAddFoundersMutation, useDeleteFoundersMutation, useGetFounderByOrgIdQuery, useUpdateFoundersMutation } from "../../api/organizationApiHandle"
 import { IconCheck } from "@tabler/icons-react"
 import ImageViewer from "../Components/ImageViewer"
-import CustomIcon from "../Components/ui/CustomIcons/CustomIcon"
 import CustomLoader from "../Components/CustomLoader"
 import { useState } from "react"
 import { modals } from "@mantine/modals"
 import {
-    MantineReactTable,
     MRT_ColumnDef,
+    MRT_RowData,
   } from 'mantine-react-table';
-  
+
+import CustomMantineReactTable from "../Components/CustomMantineReactTable"
 const Founders=()=>{
     const[opened,{open:OpenModal,close:CloseModal}]=useDisclosure(false);
     const[updateData,setUpdateData]=useState<any>(null)
@@ -175,45 +174,11 @@ const Founders=()=>{
 </>
            ):(
             <>
-            <MantineReactTable 
-    data={FoundersData?.data?.result || []} 
-    columns={columnsData} 
-    enablePagination={true} 
-    enableSorting={true} 
-    enableRowActions={true}
-    enableColumnPinning={true}
-    manualPagination={true}
-    rowCount={FoundersData?.data?.totalCount}
-    renderRowActions={({ row }) => (  
-        <>
-            <CustomIcon 
-                label="Edit" 
-                type="edit" 
-                onClick={() => handleeditclick(row.original)} 
-            />
-            &nbsp;&nbsp;
-            <CustomIcon 
-                label="Delete" 
-                type="delete" 
-                onClick={() => handleDeleteClick(row.original)} 
-            />
-        </>
-    )}
-    renderTopToolbarCustomActions={() => (
-        <CustomButton variant="add" onClick={AddFounder} />
-    )}
-    initialState={{
-        columnPinning: {
-            left: ['mrt-row-expand', 'mrt-row-select'],
-            right: ['mrt-row-actions'],
-        },
-        
-    }}
-    state={{ pagination }}
-    onPaginationChange={setPagination}
-/>
-
-            
+            <CustomMantineReactTable data={FoundersData?.data?.result || []} columns={columnsData} onAddButtonClick={()=>{AddFounder()}} rowCount={FoundersData?.data?.totalCount} onEditClick={(data: MRT_RowData)=>{
+                           handleeditclick(data);
+                        } } onDeleteClick={(data: MRT_RowData)=>{
+                            handleDeleteClick(data);
+                        } } pagination={pagination} onPaginationChange={setPagination}/>
             </>
            )} 
            

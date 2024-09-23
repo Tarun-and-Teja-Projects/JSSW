@@ -1,16 +1,15 @@
 import {  rem } from "@mantine/core";
 import { useAddSocialEventsMutation, useGetSocialEventsQuery } from "../../api/socialApiHandler";
-import CustomButton from "../Components/ui/CustomButton/CustomButton";
 import { useDisclosure } from "@mantine/hooks";
 import CustomModal from "../Components/ui/CustomModal/CustomModal";
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle";
 import CustomLoader from "../Components/CustomLoader";
-import CustomIcon from "../Components/ui/CustomIcons/CustomIcon";
 import AddSocialEvents from "./addEvents";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import { useState } from "react";
-import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
+import {  MRT_ColumnDef } from "mantine-react-table";
+import CustomMantineReactTable from "../Components/CustomMantineReactTable";
 
 
 const Events =()=>{
@@ -79,43 +78,11 @@ const[addSocial]=useAddSocialEventsMutation();
 </>
            ):(
             <>
-           
-           
-            <MantineReactTable data={socialEvents?.data?.result || []} columns={columnsData}  enablePagination={true} 
-            enableSorting={true} 
-            enableRowActions={true}
-            enableColumnPinning={true}
-            manualPagination={true}
-            rowCount={socialEvents?.data?.totalRecords}
-            renderRowActions={({}) => (  
-                <>
-                    <CustomIcon 
-                        label="Edit" 
-                        type="edit" 
-                    />
-                    &nbsp;&nbsp;
-                    <CustomIcon 
-                        label="Delete" 
-                        type="delete" 
-                    />
-                </>
-            )}
-            renderTopToolbarCustomActions={() => (
-                <CustomButton variant="add" onClick={AddEvents} />
-            )}
-            initialState={{
-                columnPinning: {
-                    left: ['mrt-row-expand', 'mrt-row-select'],
-                    right: ['mrt-row-actions'],
-                },
-                
-            }}
-            state={{ pagination }}
-            onPaginationChange={setPagination}
-        
-            />
-
-            
+            <CustomMantineReactTable data={socialEvents?.data?.result || []} columns={columnsData} onAddButtonClick={()=>{AddEvents()}} rowCount={socialEvents?.data?.totalRecords} onEditClick={function (): void {
+                            throw new Error("Function not implemented.");
+                        } } onDeleteClick={function (): void {
+                            throw new Error("Function not implemented.");
+                        } } pagination={pagination} onPaginationChange={setPagination}/> 
             </>
            )} 
            
