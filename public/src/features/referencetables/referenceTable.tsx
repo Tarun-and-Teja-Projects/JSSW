@@ -1,4 +1,4 @@
-import { MRT_ColumnDef, MRT_RowData } from "mantine-react-table"
+import { MRT_ColumnDef } from "mantine-react-table"
 import CustomMantineReactTable from "../Components/CustomMantineReactTable"
 import CustomTitle from "../Components/ui/CustomTitle/CustomTitle"
 import { useState } from "react";
