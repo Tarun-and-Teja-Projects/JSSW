@@ -85,13 +85,13 @@ const Login=()=>{
                         </Grid.Col>
                     </Grid>
                     <Group justify="right" mt={15}>
-                        <Button fullWidth onClick={handleSubmit} size="xs">Login</Button>
+                        <Button  onClick={handleSubmit} size="xs">Login</Button>
                     </Group>
-                    <Group justify="space-between" mt={15}>
+                    {/* <Group justify="space-between" mt={15}>
                         <CustomButton variant={"logindefault"} text="Fill Organization"  onClick={()=>{organization()}}/>
                         <CustomButton variant={"logindefault"} text="Fill Admin"  onClick={()=>{admin()}}/>
 
-                    </Group>
+                    </Group> */}
                    
                     {loading && (
                     <Flex justify="center" mt={2}>

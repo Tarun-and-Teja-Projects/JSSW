@@ -17,6 +17,7 @@ import Gallery from './features/gallery/gallery';
 import Videos from './features/videos/videos';
 import Donate from './features/denote/donate';
 import Contact from './features/contact';
+import ReferenceTable from './features/referencetables/referenceTable';
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
             <Route path="videos" element={<Videos/>}/>
             <Route path="contact" element={<Contact/>}/>
             <Route path='donate' element={<Donate/>}/>
+            <Route path="referenceTables" element={<ReferenceTable/>}/>
             </>
           )}
           {loginRole === 'admin' && (

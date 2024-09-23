@@ -1,5 +1,5 @@
 import { AppShell, NavLink  } from "@mantine/core";
-import { IconUser, IconUsers, IconHome, IconAffiliate, IconSitemap, IconStack2, IconUserHexagon,IconBrandGooglePhotos,IconVideo, IconCoinRupee, IconAddressBook } from "@tabler/icons-react";
+import { IconUser, IconUsers, IconHome, IconAffiliate, IconSitemap, IconStack2, IconUserHexagon,IconBrandGooglePhotos,IconVideo, IconCoinRupee, IconAddressBook, IconSettings } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../slices/store";
@@ -29,7 +29,7 @@ const Navbar = () => {
       <NavLink label="Videos" component={Link} leftSection={<IconVideo size={'1.3rem'} stroke={1.5}/>} to={'/videos'}/>
       <NavLink label="Contact" component={Link} leftSection={<IconAddressBook size={'1.3rem'} stroke={1.5}/>} to={'/contact'}/>
       <NavLink label="Donate" component={Link} leftSection={<IconCoinRupee size={'1.3rem'} stroke={1.5}/>} to={'/donate'}/>
-
+      <NavLink label="Reference Tables" component={Link} leftSection={<IconSettings size={'1.3rem'} stroke={1.5}/>} to={'/referenceTables'}/>
 
         </>
       )}
