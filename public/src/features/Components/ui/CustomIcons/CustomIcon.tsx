@@ -29,31 +29,17 @@ const CustomIcon: React.FC<Props> = ({ label, type, onClick }) => {
     const renderIcon = () => {
         switch (type) {
             case "edit":
-                return (
-                    <CustomTooltip label={label}>
-                        <IconEdit
-                            {...customProps}
-                            style={{ color: isHovered ? "var(--mantine-color-blue-8)" : "#D3D3D3", ...customProps.style }}
-                        />
-                    </CustomTooltip>
-                );
-
+                return <IconEdit {...customProps} style={{ color: isHovered ? "var(--mantine-color-blue-8)" : "#D3D3D3", ...customProps.style }}/>
             case "delete":
-                return (
-                    <CustomTooltip label={label}>
-                        <IconTrash
-                            {...customProps}
-                            style={{ color: isHovered ? "var(--mantine-color-red-8)" : "#D3D3D3", ...customProps.style }}
-                        />
-                    </CustomTooltip>
-                );
-
+                return <IconTrash {...customProps}  style={{ color: isHovered ? "var(--mantine-color-red-8)" : "#D3D3D3", ...customProps.style }}/>
             default:
                 return null;
         }
     };
 
-    return renderIcon();
+    return (
+        <CustomTooltip label={label || ""} children={renderIcon()}/>
+    )
 };
 
 export default CustomIcon;
