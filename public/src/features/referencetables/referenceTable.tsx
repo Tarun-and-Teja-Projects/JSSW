@@ -44,9 +44,9 @@ const ReferenceTable=()=>{
 
         <CustomMantineReactTable data={referenceJSON} columns={columnsData} onAddButtonClick={function (): void {
                 throw new Error("Function not implemented.")
-            } } rowCount={0} onEditClick={function (data: MRT_RowData): void {
+            } } rowCount={0} onEditClick={function (): void {
                 throw new Error("Function not implemented.")
-            } } onDeleteClick={function (data: MRT_RowData): void {
+            } } onDeleteClick={function (): void {
                 throw new Error("Function not implemented.")
             } } pagination={pagination} onPaginationChange={setPagination}/>
         </>
